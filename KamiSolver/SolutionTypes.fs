@@ -11,7 +11,7 @@ type Island = {
     id: int;
     color: Color;
     coords: Coords;
-    neighbours: list<Island>
+    neighbours: Set<int>
 }
 type FieldInfo = {
     field: Field;
