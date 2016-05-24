@@ -30,11 +30,15 @@ let main argv =
     printfn "%A" input
     printfn ""
 
-    let solution = solve input 8
-    printfn "Solution in %A step(s):" solution.Length
-    for s in List.rev solution do
-        let i, c = s.change
-        printfn ""
-        printfn "Change %A to %A at (%A, %A) to get" i.color c i.coords.x i.coords.y
-        printfn "%A" s.output.field
+    let maxSteps = 8
+    let solution = solve input maxSteps
+    if solution.IsNone then
+        printfn "No solution in %A step(s) or fewer" maxSteps
+    else
+        printfn "Solution in %A step(s):" solution.Value.Length
+        for s in List.rev solution.Value do
+            let i, c = s.change
+            printfn ""
+            printfn "Change %A to %A at (%A, %A) to get" i.color c i.coords.x i.coords.y
+            printfn "%A" s.output.field
     0 // return an integer exit code

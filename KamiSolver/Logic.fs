@@ -108,5 +108,12 @@ let rec findSolutions (fieldInfo: FieldInfo) maxLength (solution: Solution): seq
 let solve field maxLength =
     let start = analyze field
     let solutions = findSolutions start maxLength []
-    let minSolution = solutions |> Seq.where (fun s -> s.Length <= maxLength) |> Seq.minBy (fun s -> s.Length)
-    minSolution
+    if maxLength = 0 then
+        solutions
+        |> Seq.where (fun s -> s.Length <= maxLength)
+        |> Seq.minBy (fun s -> s.Length)
+        |> Some
+    else
+        solutions
+        |> Seq.skipWhile (fun s -> s.Length > maxLength)
+        |> Seq.tryHead
