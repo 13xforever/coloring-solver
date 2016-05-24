@@ -15,6 +15,7 @@ type Island = {
 }
 type FieldInfo = {
     field: Field;
+    map: IslandMap;
     islandCount: int;
     islands: list<Island>
 }
