@@ -21,7 +21,7 @@ type FieldInfo = {
 }
 type SolutionStep = {
     input: FieldInfo
-    change: Island
+    change: Island * Color
     output: FieldInfo
 }
 type Solution = list<SolutionStep>

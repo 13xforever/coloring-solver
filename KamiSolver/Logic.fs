@@ -61,10 +61,50 @@ let buildIsland (field: Field) map islandCoords: Island =
 let buildIslandLinks field map islandCount islandCoords: list<Island> =
     [ for coords in islandCoords -> buildIsland field map coords ]
 
-let analyze (field: Field): FieldInfo =
-    let width = field.GetLength 0
-    let height = field.GetLength 1
+let analyze field: FieldInfo =
+    let width = getWidth field
+    let height = getHeight field
     let map = Array2D.zeroCreate<int> width height
     let map, islandCount, islandCoords = mapIslands field [] map 1
     let islands = buildIslandLinks field map islandCount (List.rev islandCoords)
     { field = field; map = map; islandCount = islandCount; islands = islands }
+
+let rec recolor oldColor newColor x y (field: Field) =
+    if (x < 0 || x >= getWidth field || y < 0 || y >= getHeight field || field.[x, y] = newColor || field.[x, y] <> oldColor) then
+        field
+    else
+        field.[x, y] <- newColor
+        let partRecolor = recolor oldColor newColor
+        field |> partRecolor (x - 1) y
+              |> partRecolor (x + 1) y
+              |> partRecolor x (y - 1)
+              |> partRecolor x (y + 1)
+
+let possibleChanges fieldInfo =
+    if fieldInfo.islandCount = 1 then
+        Seq.empty
+    else
+        let allIslands = [ for i in fieldInfo.islands -> i.id, i] |> Map.ofList
+        seq {
+            for island in fieldInfo.islands do
+                for neighbour in island.neighbours do
+                    let newColor = allIslands.[neighbour].color
+                    let newField = recolor island.color newColor island.coords.x island.coords.y (Array2D.copy fieldInfo.field)
+                    let newFieldInfo = analyze newField
+                    yield { input = fieldInfo;
+                            change = (island, newColor);
+                            output = newFieldInfo } }
+
+let rec findSolutions (fieldInfo: FieldInfo) (solution: Solution): seq<Solution> =
+    let changes = possibleChanges fieldInfo
+    if Seq.isEmpty changes then
+        Seq.singleton solution
+    else
+        seq { for c in changes do yield! findSolutions c.output (c::solution) }
+
+
+let solve field =
+    let start = analyze field
+    let solutions = findSolutions start []
+    let minSolution = solutions |> Seq.minBy (fun s -> s.Length)
+    minSolution
