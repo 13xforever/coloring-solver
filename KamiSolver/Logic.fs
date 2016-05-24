@@ -61,13 +61,18 @@ let buildIsland (field: Field) map islandCoords: Island =
 let buildIslandLinks field map islandCount islandCoords: list<Island> =
     [ for coords in islandCoords -> buildIsland field map coords ]
 
+let countColors (field: Field) islandCoords =
+    let uniqueColors = seq { for id, x, y in islandCoords do yield field.[x, y] } |> Set.ofSeq
+    uniqueColors.Count
+
 let analyze field: FieldInfo =
     let width = getWidth field
     let height = getHeight field
     let map = Array2D.zeroCreate<int> width height
     let map, islandCount, islandCoords = mapIslands field [] map 1
     let islands = buildIslandLinks field map islandCount (List.rev islandCoords)
-    { field = field; map = map; islandCount = islandCount; islands = islands }
+    let colors = countColors field islandCoords
+    { field = field; map = map; islandCount = islandCount; colorsCount = colors; islands = islands }
 
 let rec recolor oldColor newColor x y (field: Field) =
     if (x < 0 || x >= getWidth field || y < 0 || y >= getHeight field || field.[x, y] = newColor || field.[x, y] <> oldColor) then
@@ -96,8 +101,8 @@ let possibleChanges fieldInfo =
                             output = newFieldInfo } }
 
 let rec findSolutions (fieldInfo: FieldInfo) maxLength (solution: Solution): seq<Solution> =
-    if maxLength > 0 && solution.Length > maxLength then
-        Seq.singleton solution
+    if maxLength > 0 && ((maxLength - solution.Length < fieldInfo.colorsCount - 1)  || solution.Length > maxLength) then
+        Seq.empty
     else        
         let changes = possibleChanges fieldInfo
         if Seq.isEmpty changes then
