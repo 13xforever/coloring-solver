@@ -1,5 +1,16 @@
-﻿// Learn more about F# at http://fsharp.org
-// See the 'F# Tutorial' project for more help.
+﻿open SolutionTypes
+
+let w = 'w'
+let y = 'y'
+let r = 'r'
+let g = 'g'
+let b = 'b'
+
+let testField: Field = array2D [
+    [w; w; w]
+    [w; b; w]
+    [w; w; w]
+]
 
 [<EntryPoint>]
 let main argv = 
