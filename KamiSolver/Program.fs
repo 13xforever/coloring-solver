@@ -30,7 +30,7 @@ let main argv =
     printfn "%A" input
     printfn ""
 
-    let solution = solve input
+    let solution = solve input 8
     printfn "Solution in %A step(s):" solution.Length
     for s in List.rev solution do
         let i, c = s.change

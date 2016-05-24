@@ -95,16 +95,18 @@ let possibleChanges fieldInfo =
                             change = (island, newColor);
                             output = newFieldInfo } }
 
-let rec findSolutions (fieldInfo: FieldInfo) (solution: Solution): seq<Solution> =
-    let changes = possibleChanges fieldInfo
-    if Seq.isEmpty changes then
+let rec findSolutions (fieldInfo: FieldInfo) maxLength (solution: Solution): seq<Solution> =
+    if solution.Length > maxLength then
         Seq.singleton solution
-    else
-        seq { for c in changes do yield! findSolutions c.output (c::solution) }
+    else        
+        let changes = possibleChanges fieldInfo
+        if Seq.isEmpty changes then
+            Seq.singleton solution
+        else
+            seq { for c in changes do yield! findSolutions c.output maxLength (c::solution) }
 
-
-let solve field =
+let solve field maxLength =
     let start = analyze field
-    let solutions = findSolutions start []
-    let minSolution = solutions |> Seq.minBy (fun s -> s.Length)
+    let solutions = findSolutions start maxLength []
+    let minSolution = solutions |> Seq.where (fun s -> s.Length <= maxLength) |> Seq.minBy (fun s -> s.Length)
     minSolution
