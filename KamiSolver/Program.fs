@@ -29,6 +29,6 @@ let main argv =
     printfn "Input:"
     printfn "%A" input
     let result = analyze input
-    printfn "Islands:"
+    printfn "Islands (%A):" result.islandCount
     printfn "%A" result.map
     0 // return an integer exit code

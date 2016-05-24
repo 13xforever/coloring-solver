@@ -25,4 +25,3 @@ type SolutionStep = {
     output: FieldInfo
 }
 type Solution = list<SolutionStep>
-

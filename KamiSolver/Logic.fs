@@ -28,15 +28,16 @@ let findNewIsland field map width height id =
     else
         None
 
-let rec findIslandIds field width height map id: IslandMap =
+let rec mapIslands field width height map id: IslandMap * int =
     match findNewIsland field map width height id with
-    | Some(result) -> findIslandIds field width height result (id + 1)
-    | None -> map
+    | Some(result) -> mapIslands field width height result (id + 1)
+    | None -> (map, id - 1)
+
 
 let analyze (field: Field): FieldInfo =
     let width = field.GetLength 0
     let height = field.GetLength 1
     let map = Array2D.zeroCreate<int> width height
-    let map = findIslandIds field width height map 1
+    let map, islandCount = mapIslands field width height map 1
 
-    { field = field; map = map; islandCount = -1; islands = [] }
+    { field = field; map = map; islandCount = islandCount; islands = [] }
