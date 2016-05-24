@@ -96,7 +96,7 @@ let possibleChanges fieldInfo =
                             output = newFieldInfo } }
 
 let rec findSolutions (fieldInfo: FieldInfo) maxLength (solution: Solution): seq<Solution> =
-    if solution.Length > maxLength then
+    if maxLength > 0 && solution.Length > maxLength then
         Seq.singleton solution
     else        
         let changes = possibleChanges fieldInfo
@@ -109,10 +109,8 @@ let solve field maxLength =
     let start = analyze field
     let solutions = findSolutions start maxLength []
     if maxLength = 0 then
-        solutions
-        |> Seq.where (fun s -> s.Length <= maxLength)
-        |> Seq.minBy (fun s -> s.Length)
-        |> Some
+        let result = solutions |> Seq.minBy (fun s -> s.Length)
+        Some(result)
     else
         solutions
         |> Seq.skipWhile (fun s -> s.Length > maxLength)

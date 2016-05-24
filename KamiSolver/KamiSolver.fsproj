@@ -50,6 +50,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="SolutionTypes.fs" />
     <Compile Include="Logic.fs" />
+    <Compile Include="FieldsB.fs" />
     <Compile Include="FieldsE.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />

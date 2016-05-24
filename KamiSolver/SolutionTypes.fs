@@ -29,7 +29,7 @@ type Solution = list<SolutionStep>
 let w: Color = 'w'
 let y: Color = 'y'
 let r: Color = 'r'
-let g: Color = 'g'
+let c: Color = 'c'
 let b: Color = 'b'
 
-let validColors = [| w, y, r, g, b |]
+let validColors = [| w, y, r, c, b |]
