@@ -5,13 +5,13 @@ open SolutionTypes
 let getWidth (array: 'T[,]): int = array.GetLength 0
 let getHeight (array: 'T[,]): int = array.GetLength 1
 
-let tryFindIndex (map: IslandMap) =
+let tryFindIndex (map: 'T[,]) predicate =
     let width = getWidth map
     let height = getHeight map
     seq { for x in 0..width-1 do
             for y in 0..height-1 do
                 yield (x, y, map.[x, y]) }
-    |> Seq.skipWhile (fun (x, y, v) -> v <> 0)
+    |> Seq.skipWhile predicate
     |> Seq.tryHead
 
 let rec fillNewIsland (field: Field) color id x y (map: IslandMap)=
@@ -26,7 +26,7 @@ let rec fillNewIsland (field: Field) color id x y (map: IslandMap)=
             |> partFill x (y+1)
 
 let findNewIsland field map id =
-    let coords = tryFindIndex map
+    let coords = tryFindIndex map (fun (x, y, v) -> v <> 0)
     if (coords.IsSome) then
         let x, y, _ = coords.Value
         Some(fillNewIsland field field.[x,y] id x y map)
@@ -38,13 +38,20 @@ let rec mapIslands field map id: IslandMap * int =
     | Some(result) -> mapIslands field result (id + 1)
     | None -> (map, id - 1)
 
-let buildIslandLinks field map: list<Island> =
-    []
+let buildIsland field map id: Island =
+    { id = id;
+      color = '?';
+      coords = {x = -1; y = -1};
+      neighbours = [] }
+
+let buildIslandLinks field map islandCount: list<Island> =
+    let partBuild = buildIsland field map
+    [ for i in 1..islandCount -> partBuild i ]
 
 let analyze (field: Field): FieldInfo =
     let width = field.GetLength 0
     let height = field.GetLength 1
     let map = Array2D.zeroCreate<int> width height
     let map, islandCount = mapIslands field map 1
-
-    { field = field; map = map; islandCount = islandCount; islands = [] }
+    let islands = buildIslandLinks field map islandCount
+    { field = field; map = map; islandCount = islandCount; islands = islands }

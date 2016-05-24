@@ -6,7 +6,7 @@ open FieldsE
 let testField: Field = array2D [
     [w; w; w]
     [w; b; w]
-    [w; w; w]
+    [w; w; b]
 ]
 
 let rng = new Random()
@@ -18,7 +18,8 @@ let testFieldRng: Field = Array2D.init 5 8 (fun nx ny -> match rng.NextDouble() 
 
 [<EntryPoint>]
 let main argv =
-    let input = fieldE7
+    //let input = fieldE7
+    let input = testField
     let result = analyze input
     printfn "%A" result
     0 // return an integer exit code
