@@ -24,8 +24,8 @@ let testFieldRng: Field = Array2D.init 4 4 (fun nx ny -> match rng.NextDouble() 
 
 [<EntryPoint>]
 let main argv =
-    //let input = fieldE7
-    let input = testField2
+    let input = fieldE7
+    //let input = testField2
     printfn "Input:"
     printfn "%A" input
     printfn ""
@@ -34,8 +34,6 @@ let main argv =
     printfn "Solution in %A step(s):" solution.Length
     for s in List.rev solution do
         let i, c = s.change
-        printfn ""
-        printfn "VVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV"
         printfn ""
         printfn "Change %A to %A at (%A, %A) to get" i.color c i.coords.x i.coords.y
         printfn "%A" s.output.field
