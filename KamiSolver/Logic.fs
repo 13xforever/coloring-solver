@@ -59,8 +59,7 @@ let buildIsland (field: Field) map islandCoords: Island =
       neighbours = findNeigbours (Array2D.copy map) id x y Set.empty; }
 
 let buildIslandLinks field map islandCount islandCoords: list<Island> =
-    let partBuild = buildIsland field map
-    [ for i in islandCoords -> partBuild i ]
+    [ for coords in islandCoords -> buildIsland field map coords ]
 
 let analyze (field: Field): FieldInfo =
     let width = field.GetLength 0
