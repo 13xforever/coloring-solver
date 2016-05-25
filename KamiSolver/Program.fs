@@ -4,24 +4,20 @@ open Logic
 open FieldsB
 open FieldsE
 
-let testField: Field = array2D [
-    [w; w; w]
-    [w; b; w]
-    [w; w; b]
-]
+let testField: Field = array2D [ [w; w; w]
+                                 [w; b; w]
+                                 [w; w; b] ]
 
-let testField2: Field = array2D [
-    [b; w; b]
-    [w; b; w]
-    [b; w; b]
-]
+let testField2: Field = array2D [ [b; w; b]
+                                  [w; b; w]
+                                  [b; w; b] ]
 
 let rng = new Random()
 let testFieldRng: Field = Array2D.init 16 10 (fun nx ny -> match rng.NextDouble() with
-                                                         | v when v < 0.80 -> w
-                                                         | v when v < 0.90 -> y
-                                                         | v when v < 0.95 -> r
-                                                         | _ -> c )
+                                                           | v when v < 0.80 -> w
+                                                           | v when v < 0.90 -> y
+                                                           | v when v < 0.95 -> r
+                                                           | _ -> c )
 
 [<EntryPoint>]
 let main argv =
