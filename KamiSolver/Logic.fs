@@ -108,10 +108,17 @@ let rec findSolutions (fieldInfo: FieldInfo) maxLength (solution: Solution): seq
         if Seq.isEmpty changes then
             Seq.singleton solution
         else
-            seq { for c in changes do yield! findSolutions c.output maxLength (c::solution) }
+            seq { for c in changes do
+                    if solution.Length = 0 then
+                        let i, _ = c.change
+                        printfn "Evaluating island %A" i.id
+                    else
+                        ()
+                    yield! findSolutions c.output maxLength (c::solution) }
 
 let solve field maxLength =
     let start = analyze field
+    printfn "Islands to consider: %A" start.islandCount
     let solutions = findSolutions start maxLength []
     if maxLength = 0 then
         let result = solutions |> Seq.minBy (fun s -> s.Length)
