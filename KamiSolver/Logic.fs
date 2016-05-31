@@ -39,12 +39,12 @@ let rec mapIslands field islandCoords map id: IslandMap * int * list<int * int *
     | None -> (map, id - 1, islandCoords)
 
 let rec findNeigbours map id x y (neighbours: Set<int>) =
-    if (x < 0 || x >= getWidth map || y < 0 || y >= getHeight map || map.[x, y] = 0) then
+    if (x < 0 || x >= getWidth map || y < 0 || y >= getHeight map || map.[x, y] < 1) then
         neighbours
     else
         match map.[x, y] with
         | n when n <> id -> neighbours.Add n
-        | _ -> map.[x, y] <- 0
+        | _ -> map.[x, y] <- -id
                let partFind = findNeigbours map id
                neighbours |> partFind (x - 1) y
                           |> partFind (x + 1) y
@@ -56,7 +56,7 @@ let buildIsland (field: Field) map islandCoords: Island =
     { id = id;
       color = field.[x, y];
       coords = {x = x; y = y};
-      neighbours = findNeigbours (Array2D.copy map) id x y Set.empty; }
+      neighbours = findNeigbours map id x y Set.empty; }
 
 let buildIslandLinks field map islandCount islandCoords: list<Island> =
     [ for coords in islandCoords -> buildIsland field map coords ]
@@ -70,7 +70,7 @@ let analyze field: FieldInfo =
     let height = getHeight field
     let map = Array2D.zeroCreate<int> width height
     let map, islandCount, islandCoords = mapIslands field [] map 1
-    let islands = buildIslandLinks field map islandCount (List.rev islandCoords)
+    let islands = buildIslandLinks field (Array2D.copy map) islandCount (List.rev islandCoords)
     let colors = countColors field islandCoords
     { field = field; map = map; islandCount = islandCount; colorsCount = colors; islands = islands }
 
