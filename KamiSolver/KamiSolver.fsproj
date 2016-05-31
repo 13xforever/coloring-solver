@@ -49,7 +49,8 @@
   <ItemGroup>
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="SolutionTypes.fs" />
-    <Compile Include="Logic.fs" />
+    <Compile Include="FieldAnalyzer.fs" />
+    <Compile Include="SolutionFinder.fs" />
     <Compile Include="FieldsB.fs" />
     <Compile Include="FieldsE.fs" />
     <Compile Include="Program.fs" />

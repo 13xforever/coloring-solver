@@ -1,6 +1,6 @@
 ﻿open System
 open SolutionTypes
-open Logic
+open SolutionFinder
 open FieldsB
 open FieldsE
 
@@ -13,7 +13,7 @@ let testField2: Field = array2D [ [b; w; b]
                                   [b; w; b] ]
 
 let rng = new Random()
-let testFieldRng: Field = Array2D.init 16 10 (fun nx ny -> match rng.NextDouble() with
+let testFieldRng: Field = Array2D.init 14 9 (fun nx ny -> match rng.NextDouble() with
                                                            | v when v < 0.80 -> w
                                                            | v when v < 0.90 -> y
                                                            | v when v < 0.95 -> r
@@ -21,14 +21,14 @@ let testFieldRng: Field = Array2D.init 16 10 (fun nx ny -> match rng.NextDouble(
 
 [<EntryPoint>]
 let main argv =
-    let input = fieldE7
+    //let input = fieldE7
     //let input = testField2
-    //let input = testFieldRng
+    let input = testFieldRng
     printfn "Input:"
     printfn "%A" input
     printfn ""
 
-    let maxSteps = 8
+    let maxSteps = 0
     let solution = solve input maxSteps
     if solution.IsNone then
         printfn "No solution in %A step(s) or fewer" maxSteps
