@@ -26,7 +26,7 @@ let rec fillNewIsland (field: Field) color id x y (map: IslandMap)=
             |> partFill x (y + 1)
 
 let findNewIsland field map id =
-    let coords = tryFindIndex map (fun (x, y, v) -> v <> 0)
+    let coords = tryFindIndex map (fun (x, y, id) -> id <> 0)
     if (coords.IsSome) then
         let x, y, _ = coords.Value
         Some(x, y, fillNewIsland field field.[x,y] id x y map)
