@@ -1,5 +1,6 @@
 ﻿module FieldAnalyzer
 
+open System.Text
 open SolutionTypes
 
 let getWidth (array: 'T[,]): int = array.GetLength 0
@@ -65,6 +66,16 @@ let countColors (field: Field) islandCoords =
     let uniqueColors = seq { for id, x, y in islandCoords do yield field.[x, y] } |> Set.ofSeq
     uniqueColors.Count
 
+let generateIslandId (field: Field): string =
+    let width = getWidth field
+    let height = getHeight field
+    let sb = new StringBuilder()
+    sb.Append(
+        seq { for x in 0..width-1 do
+                for y in 0..height-1 do
+                    yield field.[x, y] }
+    ).ToString()
+
 let analyze field: FieldInfo =
     let width = getWidth field
     let height = getHeight field
@@ -72,4 +83,5 @@ let analyze field: FieldInfo =
     let map, islandCount, islandCoords = mapIslands field [] map 1
     let islands = buildIslandLinks field (Array2D.copy map) islandCount (List.rev islandCoords)
     let colors = countColors field islandCoords
-    { field = field; map = map; islandCount = islandCount; colorsCount = colors; islands = islands }
+    let id = generateIslandId field
+    { field = field; map = map; islandCount = islandCount; colorsCount = colors; islands = islands; id = id }

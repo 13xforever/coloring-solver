@@ -4,21 +4,22 @@ type Color = char
 type Field = Color[,]
 type IslandMap = int[,]
 type Coords = {
-    x: int;
+    x: int
     y: int
 }
 type Island = {
-    id: int;
-    color: Color;
-    coords: Coords;
+    id: int
+    color: Color
+    coords: Coords
     neighbours: Set<int>
 }
 type FieldInfo = {
-    field: Field;
-    map: IslandMap;
-    islandCount: int;
-    colorsCount: int;
+    field: Field
+    map: IslandMap
+    islandCount: int
+    colorsCount: int
     islands: list<Island>
+    id: string
 }
 type SolutionStep = {
     input: FieldInfo
