@@ -92,8 +92,8 @@ let possibleChanges fieldInfo =
         let allIslands = [ for i in fieldInfo.islands -> i.id, i] |> Map.ofList
         seq {
             for island in fieldInfo.islands do
-                for neighbour in island.neighbours do
-                    let newColor = allIslands.[neighbour].color
+                let neighbourColors = Set.ofSeq (seq { for neighbour in island.neighbours do yield allIslands.[neighbour].color })
+                for newColor in neighbourColors do
                     let newField = recolor island.color newColor island.coords.x island.coords.y (Array2D.copy fieldInfo.field)
                     let newFieldInfo = analyze newField
                     yield { input = fieldInfo;
