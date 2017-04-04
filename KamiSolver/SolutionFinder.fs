@@ -40,8 +40,8 @@ let rec findSolutions (fieldInfo: FieldInfo) maxLength (solution: Solution): seq
         else
             seq { for c in changes do
                     if solution.Length = 0 then
-                        let i, _ = c.change
-                        printfn "Evaluating island %A" i.id
+                        let i, nc = c.change
+                        printfn "Evaluating island %A (%A -> %A)" i.id i.color nc
                     else
                         ()
                     yield! findSolutions c.output maxLength (c::solution) }

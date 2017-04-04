@@ -9,7 +9,7 @@ let testField: Field = array2D [ [w; w; w]
                                  [w; w; b] ]
 
 let testField2: Field = array2D [ [b; w; b]
-                                  [w; b; w]
+                                  [r; b; w]
                                   [b; w; b] ]
 
 let rng = new Random()
