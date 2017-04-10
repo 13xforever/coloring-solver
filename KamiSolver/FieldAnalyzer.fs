@@ -54,10 +54,12 @@ let rec findNeigbours map id x y (neighbours: Set<int>) =
 
 let buildIsland (field: Field) map islandCoords: Island =
     let id, x, y = islandCoords
+    let neighbours = findNeigbours (Array2D.copy map) id x y Set.empty
+    //printfn "Island %A neighbours: %A" id neighbours
     { id = id;
       color = field.[x, y];
       coords = {x = x; y = y};
-      neighbours = findNeigbours map id x y Set.empty; }
+      neighbours = neighbours; }
 
 let buildIslandLinks field map islandCount islandCoords: list<Island> =
     [ for coords in islandCoords -> buildIsland field map coords ]
@@ -65,6 +67,12 @@ let buildIslandLinks field map islandCount islandCoords: list<Island> =
 let countColors (field: Field) islandCoords =
     let uniqueColors = seq { for id, x, y in islandCoords do yield field.[x, y] } |> Set.ofSeq
     uniqueColors.Count
+
+let countUniqueColors islands = 
+    islands |> Map.toSeq
+            |> Seq.map (fun (_, i) -> i.color)
+            |> Seq.distinct
+            |> Seq.length
 
 let generateIslandId (field: Field): string =
     let width = getWidth field
@@ -84,6 +92,5 @@ let analyze field: FieldInfo =
     let islands = buildIslandLinks field (Array2D.copy map) islandCount (List.rev islandCoords)
                   |> List.map (fun i -> i.id, i)
                   |> Map.ofList
-    let colors = countColors field islandCoords
-    let id = generateIslandId field
-    { field = field; map = map; islandCount = islandCount; colorsCount = colors; islands = islands; id = id }
+    let colors = countUniqueColors islands
+    { colorsCount = colors; islands = islands}

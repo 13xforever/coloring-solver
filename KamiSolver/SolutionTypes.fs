@@ -14,12 +14,8 @@ type Island = {
     neighbours: Set<int>
 }
 type FieldInfo = {
-    field: Field
-    map: IslandMap
-    islandCount: int
     colorsCount: int
     islands: Map<int, Island>
-    id: string
 }
 type SolutionStep = {
     input: FieldInfo
