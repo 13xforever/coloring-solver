@@ -82,6 +82,8 @@ let analyze field: FieldInfo =
     let map = Array2D.zeroCreate<int> width height
     let map, islandCount, islandCoords = mapIslands field [] map 1
     let islands = buildIslandLinks field (Array2D.copy map) islandCount (List.rev islandCoords)
+                  |> List.map (fun i -> i.id, i)
+                  |> Map.ofList
     let colors = countColors field islandCoords
     let id = generateIslandId field
     { field = field; map = map; islandCount = islandCount; colorsCount = colors; islands = islands; id = id }

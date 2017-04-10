@@ -18,7 +18,7 @@ type FieldInfo = {
     map: IslandMap
     islandCount: int
     colorsCount: int
-    islands: list<Island>
+    islands: Map<int, Island>
     id: string
 }
 type SolutionStep = {
