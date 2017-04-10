@@ -23,14 +23,14 @@ let printIslands islands =
     printfn "%A" listToPrint
 
 let recolorNeighbours (island: Island) newColor (fieldInfo: FieldInfo) =
-    printIslands fieldInfo.islands
-    printfn "%A ==> %A" island.color newColor
+ //   printIslands fieldInfo.islands
+//    printfn "%A ==> %A" island.color newColor
 
     let neighboursToMerge = island.neighbours
                             |> Seq.where (fun i -> fieldInfo.islands.[i].color = newColor)
                             |> Set.ofSeq
 
-    printfn "neighboursToMerge: %A" (neighboursToMerge |> List.ofSeq)
+//    printfn "neighboursToMerge: %A" (neighboursToMerge |> List.ofSeq)
 
     let neighboursOfNeighbours = seq { for id in neighboursToMerge do yield! fieldInfo.islands.[id].neighbours }
                                  |> Seq.distinct
@@ -42,25 +42,24 @@ let recolorNeighbours (island: Island) newColor (fieldInfo: FieldInfo) =
                                                         yield { i with neighbours = newNeighbours } }
                                         |> List.ofSeq
 
-    printfn "updatedNeighboursOfNeighbours: %A" (updatedNeighboursOfNeighbours |> Seq.map (fun i -> i.id, i.neighbours) |> List.ofSeq)
+//    printfn "updatedNeighboursOfNeighbours: %A" (updatedNeighboursOfNeighbours |> Seq.map (fun i -> i.id, i.neighbours) |> List.ofSeq)
 
-    let neighboursOfNeighboursIds = updatedNeighboursOfNeighbours |> Seq.map (fun i -> i.id) |> Set.ofSeq
-    let updatedIslandNeighbours = island.neighbours - neighboursToMerge + neighboursOfNeighboursIds
+    let updatedIslandNeighbours = island.neighbours - neighboursToMerge + neighboursOfNeighbours
 
-    printfn "updatedIsland Neighbours: %A" updatedIslandNeighbours
+//    printfn "updatedIsland Neighbours: %A" updatedIslandNeighbours
 
     let updatedIsland = { island with color = newColor; neighbours = updatedIslandNeighbours }
     let newIslands = fieldInfo.islands
                         |> Map.toSeq
                         |> Seq.map (fun (_, i) -> i)
-                        |> Seq.where (fun i -> not ((neighboursToMerge.Contains i.id) || (updatedIslandNeighbours.Contains i.id) || (i.id = island.id)))
+                        |> Seq.where (fun i -> not ((neighboursToMerge.Contains i.id) || (neighboursOfNeighbours.Contains i.id) || (i.id = island.id)))
                         |> Seq.append updatedNeighboursOfNeighbours
                         |> Seq.append (Seq.singleton updatedIsland)
                         |> Seq.map (fun i -> i.id, i)
                         |> Map.ofSeq
 
-    printIslands newIslands
-    printfn "\n"
+//    printIslands newIslands
+//    printfn "\n"
 
     let colorsCount = countUniqueColors newIslands
     { fieldInfo with colorsCount = colorsCount; islands = newIslands }
@@ -74,16 +73,19 @@ let possibleChanges fieldInfo =
                             |> Seq.map (fun (_, i) -> i)
                             |> Seq.sortByDescending (fun i -> i.neighbours.Count)
                             |> List.ofSeq
-        //printfn "sortedIslands: %A" (sortedIslands |> List.map (fun i -> i.id, i.neighbours))
+//        printfn "sortedIslands: %A" (sortedIslands |> List.map (fun i -> i.id, i.neighbours))
+//        printfn "Islands before recoloring:"
+//        printIslands fieldInfo.islands
         seq {
             for island in sortedIslands do
+//                printfn "Looking for neighbourColors of island %A: %A" island.id (island.neighbours)
                 let neighbourColors = seq { for neighbour in island.neighbours do
                                                 yield fieldInfo.islands.[neighbour].color }
                                       |> Seq.distinct
                                       |> List.ofSeq
-                printfn "neighbourColors: %A" neighbourColors
+//                printfn "neighbourColors: %A" neighbourColors
                 for newColor in neighbourColors do
-                    printfn "recoloring %A from %A to %A" island.id island.color newColor
+//                    printfn "recoloring %A from %A to %A" island.id island.color newColor
                     let newFieldInfo = recolorNeighbours island newColor fieldInfo
                     yield { input = fieldInfo;
                             change = (island, newColor);
