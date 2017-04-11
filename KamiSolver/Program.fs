@@ -22,8 +22,8 @@ let testFieldRng: Field = Array2D.init 14 9 (fun nx ny -> match rng.NextDouble()
 [<EntryPoint>]
 let main argv =
     //let input = fieldE7
-    //let input = testField2
-    let input = testFieldRng
+    let input = testField2
+    //let input = testFieldRng
     printfn "Input:"
     printfn "%A" input
     printfn ""
@@ -34,9 +34,11 @@ let main argv =
         printfn "No solution in %A step(s) or fewer" maxSteps
     else
         printfn "Solution in %A step(s):" solution.Value.Length
+        let changedField = input
         for s in List.rev solution.Value do
             let i, c = s.change
+            let changedField = recolor i.color c i.coords.x i.coords.y changedField
             printfn ""
             printfn "Change %A to %A at (%A, %A) to get" i.color c i.coords.x i.coords.y
-            printfn "%A" s.output.field
+            printfn "%A" changedField
     0 // return an integer exit code
