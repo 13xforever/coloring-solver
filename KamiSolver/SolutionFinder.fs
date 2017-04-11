@@ -70,7 +70,7 @@ let solve field maxLength =
     let start = analyze field
     printfn "Islands to consider: %A" start.islands.Length
     let solutions = findSolutions start maxLength []
-    if maxLength = 0 then
+    if maxLength < 1 then
         let result = solutions |> Seq.minBy (fun s -> s.Length)
         Some(result)
     else
