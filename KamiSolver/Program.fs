@@ -29,6 +29,11 @@ let main argv =
     printfn ""
 
     let maxSteps = 0
+    if maxSteps < 1 then
+        printfn "Looking for optimal solution..."
+    else
+        printfn "Looking for first solution in %A steps..." maxSteps
+    printfn ""
     let solution = solve input maxSteps
     if solution.IsNone then
         printfn "No solution in %A step(s) or fewer" maxSteps
