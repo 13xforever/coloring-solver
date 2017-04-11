@@ -3,9 +3,6 @@
 open System.Text
 open SolutionTypes
 
-let getWidth (array: 'T[,]): int = array.GetLength 0
-let getHeight (array: 'T[,]): int = array.GetLength 1
-
 let tryFindIndex (map: 'T[,]) predicate =
     let width = getWidth map
     let height = getHeight map

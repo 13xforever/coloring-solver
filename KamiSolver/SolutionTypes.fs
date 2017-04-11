@@ -31,3 +31,6 @@ let c: Color = 'c'
 let b: Color = 'b'
 
 let validColors = [| w, y, r, c, b |]
+
+let getWidth (array: 'T[,]): int = array.GetLength 0
+let getHeight (array: 'T[,]): int = array.GetLength 1

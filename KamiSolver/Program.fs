@@ -1,6 +1,7 @@
 ﻿open System
 open SolutionTypes
 open SolutionFinder
+open Printing
 open FieldsB
 open FieldsE
 
@@ -25,7 +26,7 @@ let main argv =
     let input = testField2
     //let input = testFieldRng
     printfn "Input:"
-    printfn "%A" input
+    printField input -1 -1
     printfn ""
 
     let maxSteps = 0
@@ -45,5 +46,5 @@ let main argv =
             let changedField = recolor i.color c i.coords.x i.coords.y changedField
             printfn ""
             printfn "Change %A to %A at (%A, %A) to get" i.color c i.coords.x i.coords.y
-            printfn "%A" changedField
+            printField changedField i.coords.x i.coords.y
     0 // return an integer exit code
