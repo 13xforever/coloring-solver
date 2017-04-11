@@ -18,9 +18,9 @@ let printField (field: Field) pointX pointY =
             match field.[X, Y] with
             | color when color=w -> Console.BackgroundColor <- ConsoleColor.White
                                     Console.ForegroundColor <- ConsoleColor.Black
-            | color when color=y -> Console.BackgroundColor <- ConsoleColor.DarkYellow
+            | color when color=y -> Console.BackgroundColor <- ConsoleColor.Yellow
                                     Console.ForegroundColor <- ConsoleColor.Black
-            | color when color=r -> Console.BackgroundColor <- ConsoleColor.DarkRed
+            | color when color=r -> Console.BackgroundColor <- ConsoleColor.Red
                                     Console.ForegroundColor <- ConsoleColor.White
             | color when color=c -> Console.BackgroundColor <- ConsoleColor.DarkCyan
                                     Console.ForegroundColor <- ConsoleColor.Black
