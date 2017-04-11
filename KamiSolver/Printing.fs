@@ -27,10 +27,10 @@ let printField (field: Field) pointX pointY =
             | color when color=b -> Console.BackgroundColor <- ConsoleColor.Black
                                     Console.ForegroundColor <- ConsoleColor.White
             | color -> raise (InvalidOperationException(sprintf "Unknown color %A" color))
-            if (X, Y) = (pointX, pointY) then
-                Console.Write "X"
-            else
-                Console.Write "."
+            match (X, Y, Console.BackgroundColor) with
+            | (sx, sy, _) when (sx, sy) = (pointX, pointY) -> Console.Write "X"
+            | (_, _, sc) when sc = oldBgColor -> Console.Write "."
+            | _ -> Console.Write " "
         Console.WriteLine ""
     Console.ForegroundColor <- oldFgColor
     Console.BackgroundColor <- oldBgColor
