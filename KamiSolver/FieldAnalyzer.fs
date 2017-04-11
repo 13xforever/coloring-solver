@@ -68,8 +68,7 @@ let countColors (field: Field) islandCoords =
     Seq.length uniqueColors
 
 let countUniqueColors islands = 
-    islands |> Map.toSeq
-            |> Seq.map (fun (_, i) -> i.color)
+    islands |> Seq.map (fun i -> i.color)
             |> Seq.distinct
             |> Seq.length
 
@@ -89,7 +88,5 @@ let analyze field: FieldInfo =
     let map = Array2D.zeroCreate<int> width height
     let map, islandCount, islandCoords = mapIslands field [] map 1
     let islands = buildIslandLinks field (Array2D.copy map) islandCount (List.rev islandCoords)
-                  |> Seq.map (fun i -> i.id, i)
-                  |> Map.ofSeq
     let colors = countUniqueColors islands
     { colorsCount = colors; islands = islands}
